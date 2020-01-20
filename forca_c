@@ -1,0 +1,99 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <string.h>
+#include <ctype.h>
+
+int main() {
+    // lista(matriz) de palavras
+    char palavras[15][50] = {"azul", "bermuda", "mancha", "brasil", "macarronada","mamadeira", "basqueteboll", "computador", "lambreta", "ancora","professor", "lampada", "alpinismo", "apagador", "alemanha", };
+    
+    int op, sair = 0;
+    
+    // inicializando as funções void jogo(char vPalavras[15][50]);
+    void jogo(char vPalavras[15][50]);
+    void banco_palavras(char bPalavras[15][50]);
+   
+    // laço até digitar 5 para sair
+    do{
+        printf("\n\t\t             ==============JOGO DA FORCA============\n\n");
+        printf("\t1.Novo jogo \t2.Mostar Banco de palavras \t3.Sobre \t4.Ajuda \t5.Sair\n");
+        printf("\n\tInformee o numero correspondente\n");
+        scanf("%d", &op);
+        switch (op) {
+            case 1:
+                jogo(palavras);
+                break;
+            case 2:
+                printf("\n\n              ==================BANCO DE PALAVRAS======================\n\n");
+                banco_palavras(palavras);
+                break;
+            case 3:
+                printf("\n\n                      ================SOBRE======================\n\n");
+                printf("\n@aoutor: Ricardo L. Jordão\nGraduando em Ciencia da computacao, I Semestre.\nEsse jogo foi desenvolvido no processo avaliativo da disciplina LP\n");
+                break;
+            case 4:
+                printf("\n\n                       ================AJUDA=====================\n\n");
+                printf("\nO jogo da forca tem em seu banco de dados 15 palavras que não seguem nenhum padrao, a cada novo jogo é sorteado uma das palavras. O jogo so termina quando o jogador acerta/descobre a palavra, no entanto ao final do jogo e mostrado quantas vezes o jogador errou antes de acertar a palavra\n\nPara comecar a joga vc deve escolher um novo jogo e digitar uma letra por vez ate acertar a palavra\n");
+                break;
+            case 5:
+                sair = 1;
+                break;
+            default:
+                printf("Numero não correspondente\n");
+                break;
+        }
+    }while (sair != 1);
+    return 0;
+
+}
+
+// função para apresentar o banco de palavras
+void banco_palavras(char bPalavras[15][50]){
+    for (int i = 0; i < 15; i++) {
+        printf("%d - %s\n", i+1, bPalavras[i]);
+    }
+}
+
+// função do jogo
+void jogo(char vPalavras[15][50]){
+    char palavra[50] = "", copia_palavra[50]= "", letra;
+    int n, i, cont, erro;
+
+    n = cont = erro = 0;
+    // inicializando a seed para o sorteio
+    srand( (unsigned) (time(NULL)) );
+    // sorteio do indice da palavra
+    n = rand() % 15;
+    // compiando a palavra da matriz do indice n para a variavel palavra
+    strcpy(palavra, vPalavras[n]);
+
+    for (i = 0; i < strlen(palavra); i++) {
+        copia_palavra[i] = '_';
+    }
+   
+    do{
+        system("cls");
+        printf("\n\t\t             ==============JOGO DA FORCA============\n");
+        printf("\nErros: %d\n\n", erro);
+        for (i = 0; i < strlen(copia_palavra); i++)
+            printf("%c", copia_palavra[i]);
+        
+     
+        printf("\n\nInforme uma letra\n");
+        scanf("%s", &letra);
+        cont = 0;
+        for (i = 0; i < strlen(palavra); i++){
+            if (palavra[i] == tolower(letra)) {
+                copia_palavra[i] = tolower(letra);
+                cont = 1;
+            }
+        }
+        if (cont == 0)
+            erro +=1;
+
+    }while (strcmp(palavra, copia_palavra));
+    printf("\n\t\t        ==========PARABENS!! VOCE ACERTOU!!=========\n");
+    printf("\n\t\t                  A PALAVRA E: %s\n", palavra);
+    printf("\t\t                    VOCE ERROU %d VEZES\n\n\n", erro);
+}
